@@ -1,0 +1,12 @@
+# Build output
+yammidi-bridge
+yammidi-bridge-v*
+/yammidi-bridge-v7
+
+# Logs
+*.log
+*.logERR
+
+# macOS cruft
+.DS_Store
+*.dSYM/
