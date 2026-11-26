@@ -20,6 +20,10 @@ make clean >/dev/null 2>&1 || true
 make || { echo "build failed"; exit 1; }
 
 echo
+echo "== selftest =="
+./yammidi-bridge --selftest || { echo "selftest failed — refusing to install"; exit 1; }
+
+echo
 echo "== install binary =="
 cp "$BIN_NAME" "$INSTALL_DIR/$BIN_NAME"
 chmod 755 "$INSTALL_DIR/$BIN_NAME"
@@ -42,7 +46,9 @@ launchctl print "gui/$(id -u)/$LABEL" 2>/dev/null | grep -E "state =|pid =" | he
 echo
 echo "Done. Log: $LOG_PATH"
 echo "If the keyboard was not attached at login the log says"
-echo "  'device not present, waiting...'  — plug it in and it attaches."
+echo "  'no matching device, waiting...'  — plug it in and it attaches."
+echo "Check what the bridge would find, without claiming it:"
+echo "  \"$INSTALL_DIR/$BIN_NAME\" --probe"
 echo
 echo "Uninstall: launchctl bootout gui/$(id -u)/$LABEL"
 echo "           rm -rf \"$INSTALL_DIR\" \"$PLIST\""
